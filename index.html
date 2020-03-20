@@ -1,0 +1,76 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./src/index.js" type="module"></script>
+  </head>
+  <body>
+    <div>
+      哈哈
+    </div>
+    <div>
+      <button onclick="handleSend()">点击发送http请求数据</button>
+    </div>
+    <div>
+      <button onclick="openNewWindow()">打开新窗口</button>
+      <button onclick="handleSend2()">点击发送postMessage数据</button>
+    </div>
+  </body>
+  <script type="module">
+    import CrossIO from './src/index.js'
+    window.myIO = new CrossIO()
+    // 监听postMessage数据
+    myIO.onMessage(
+      {
+        url: '192.168.200.85:3000'
+      },
+      res => {
+        console.log(res)
+      }
+    )
+    // 监听http或者websocket数据
+    myIO.onMessage(
+      {
+        url: '192.168.200.85:3000'
+      },
+      res => {
+        console.log(res)
+      },
+      'pm'
+    )
+  </script>
+
+  <script>
+    // http请求的数据发送
+    function handleSend() {
+      window.myIO.sendMessage({
+        url: 'http://192.168.200.85:3000/api/message',
+        params: {
+          id: '我是张宇辉'
+        }
+      })
+    }
+  </script>
+
+  <script>
+    // postMessage发送请求
+    let newWindow
+    function openNewWindow() {
+      newWindow = window.open(window.location.href, '_blank')
+    }
+    function handleSend2() {
+      window.myIO.sendMessage(
+        {
+          targetWindow: newWindow,
+          data: '我是postMessage消息'
+        },
+        res => {
+          console.log('res: ', res)
+        },
+        'pm'
+      )
+    }
+  </script>
+</html>
