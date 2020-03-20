@@ -1,3 +1,4 @@
+import loadStopMethod from '../utils/load_stop_method.js' // 装载关闭方法
 // websocket
 export function ws(config, callback) {
   const url = 'ws://' + config.url || ''
@@ -11,12 +12,20 @@ export function ws(config, callback) {
   ws.onerror = () => {
     console.log('websocket连接发生错误')
   }
+  loadStopMethod.call(this, ws.close)
 }
 
 // 长轮询
 export function lc(config, callback) {
+  const CancelToken = axios.CancelToken
+  let _this = this
   const longConnect = (cf, cb) => {
-    axios(cf)
+    axios({
+      ...cf,
+      cancelToken: new CancelToken(function executor(c) {
+        loadStopMethod.call(_this, c)
+      })
+    })
       .then(result => {
         const body = result.data
         if (body.code === 'success') {
@@ -39,7 +48,11 @@ export function lc(config, callback) {
 
 // postMessage
 export function pm(config, callback) {
-  window.addEventListener('message', (event) => {
+  const resolveEvent = event => {
     callback(event.data)
+  }
+  window.addEventListener('message', resolveEvent)
+  loadStopMethod.call(this, () => {
+    window.removeEventListener('message', resolveEvent)
   })
 }

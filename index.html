@@ -16,6 +16,7 @@
     <div>
       <button onclick="openNewWindow()">打开新窗口</button>
       <button onclick="handleSend2()">点击发送postMessage数据</button>
+      <button onclick="canclePostMessage()">关闭postMessage</button>
     </div>
   </body>
   <script type="module">
@@ -71,6 +72,9 @@
         },
         'pm'
       )
+    }
+    function canclePostMessage() {
+      window.myIO.close()
     }
   </script>
 </html>

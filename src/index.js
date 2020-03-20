@@ -7,22 +7,27 @@ import * as sendWays from './ways/send_ways.js'
 const loop = () => {}
 
 class CrossIO {
+  constructor() {
+    this.stopConnectionFn = loop
+  }
   // 发送方法，发送端
   sendMessage(config, callback, type) {
     const sendType = judgeSendType(type)
     const fn = sendWays[sendType] || loop
-    fn(config, callback)
+    fn(config, callback || loop)
   }
 
   // 接收方法
   onMessage(config, callback, type) {
     const connectType = judgeConnectType(type)
-    const fn = connectionWays[connectType] || loop
-    fn(config, callback)
+    const fn = connectionWays[connectType].bind(this) || loop
+    fn(config, callback || loop)
   }
 
   // 断开以及销毁方法
-  close() {}
+  close() {
+    this.stopConnectionFn()
+  }
 }
 
 export default CrossIO
