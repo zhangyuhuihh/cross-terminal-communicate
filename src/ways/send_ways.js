@@ -12,7 +12,7 @@ export function http(config, callback) {
       }
     })
     .catch(Error => {
-      callback(body)
+      callback(Error)
     })
 }
 
