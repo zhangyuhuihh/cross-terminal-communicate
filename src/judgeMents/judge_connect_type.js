@@ -15,7 +15,7 @@ function judgeConnectType(type) {
       }
       return 'ws'
 
-    case 'ls':
+    case 'lc':
       return 'lc'
 
     default:

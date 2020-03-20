@@ -1,5 +1,4 @@
-// import axios from '../node_modules/axios'
-
+// websocket
 export function ws(config, callback) {
   const url = 'ws://' + config.url || ''
   const ws = new WebSocket(url)
@@ -14,7 +13,8 @@ export function ws(config, callback) {
   }
 }
 
-export function ls(config, callback) {
+// 长轮询
+export function lc(config, callback) {
   const longConnect = (cf, cb) => {
     axios(cf)
       .then(result => {
@@ -37,7 +37,7 @@ export function ls(config, callback) {
   longConnect(newConfig, callback)
 }
 
-
+// postMessage
 export function pm(config, callback) {
   window.addEventListener('message', (event) => {
     callback(event.data)
