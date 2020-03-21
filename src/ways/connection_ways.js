@@ -1,7 +1,8 @@
 import loadStopMethod from '../utils/load_stop_method.js' // 装载关闭方法
+import resolveParams from '../utils/resolve_params.js'
 // websocket
 export function ws(config, callback) {
-  const url = 'ws://' + config.url || ''
+  const url = 'ws://' + config.url + resolveParams(config)
   const ws = new WebSocket(url)
   ws.onmessage = event => {
     callback(event.data)
