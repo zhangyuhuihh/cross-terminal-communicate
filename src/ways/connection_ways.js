@@ -7,10 +7,8 @@ export function ws(config, callback) {
   ws.onmessage = event => {
     callback(event.data)
   }
-  ws.onclose = () => {
-    console.log('websocket连接已关闭')
-  }
-  ws.onerror = () => {
+  ws.onerror = (event) => {
+    callback(event.data)
     console.log('websocket连接发生错误')
   }
   loadStopMethod.call(this, ws.close)
