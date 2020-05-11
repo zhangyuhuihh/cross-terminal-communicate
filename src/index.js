@@ -1,8 +1,5 @@
-// import axios from '../node_modules/axios'
-import judgeConnectType from './judgeMents/judge_connect_type.js'
-import judgeSendType from './judgeMents/judge_send_type.js'
-import * as connectionWays from './ways/connection_ways.js'
-import * as sendWays from './ways/send_ways.js'
+import { clientSendMessage, clientOnMessage } from './client/index'
+import { serverSendMessage, serverOnMessage } from './server/index'
 
 const loop = () => {}
 
@@ -19,12 +16,10 @@ class CrossIO {
   sendMessage(config, callback, type) {
     if (window) {
       // 运行在浏览器端
-      const sendType = judgeSendType(type)
-      const fn = sendWays[sendType] || loop
-      fn(config, callback || loop)
+      clientSendMessage(config, callback, type)
     } else {
       // 运行在服务器端
-      
+      serverSendMessage(config, callback)
     }
   }
 
@@ -36,11 +31,10 @@ class CrossIO {
   onMessage(config, callback, type) {
     if (window) {
       // 运行在浏览器端
-      const connectType = judgeConnectType(type)
-      const fn = connectionWays[connectType].bind(this) || loop
-      fn(config, callback || loop)
+      clientOnMessage(config, callback, type)
     } else {
       // 运行在服务器端
+      serverOnMessage(config, callback)
     }
   }
 
