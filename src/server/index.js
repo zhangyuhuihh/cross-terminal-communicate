@@ -1,6 +1,8 @@
 const net = require('net')
 const crypto = require('crypto')
 
+// socket.io是建立在http服务器上的
+
 const serverSendMessage = () => {}
 
 //计算websocket校验
