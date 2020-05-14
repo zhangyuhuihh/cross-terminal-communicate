@@ -96,9 +96,9 @@ const serverOnMessage = (config, callback) => {
       console.log('连接结束')
     })
 
-    socket.on('close', function () {
-      console.log('连接关闭')
-    })
+    // socket.on('close', function () {
+    //   console.log('连接关闭')
+    // })
   })
 
   //监听8888端口
